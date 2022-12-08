@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity{
 
     String[] myListOfWords={"elephant","dolphin","chicken","lion","duck","goose","zebra","cow"};
     LinearLayout main;
+    TextWatcher tw;
     int index=0;
     int counter=0;
     @Override
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity{
         stringToDisplay=String.valueOf(stringToDisplayArr);
         Displayedword.setText(stringToDisplay);
 
-        etLetter.addTextChangedListener(new TextWatcher() {
+        etLetter.addTextChangedListener(  tw=new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -62,13 +63,13 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                    if(checkIfLetterisinWord(charSequence.charAt(counter),wordtoguess)==true)
+                    if(checkIfLetterisinWord(charSequence.charAt(0),wordtoguess)==true)
                     {
                         for(int f=0;f<wordtoguess.length();f++)
                         {
-                            if(wordtoguess.charAt(f)==charSequence.charAt(counter))
+                            if(wordtoguess.charAt(f)==charSequence.charAt(0))
                             {
-                                stringToDisplayArr[f]= charSequence.charAt(counter);
+                                stringToDisplayArr[f]= charSequence.charAt(0);
                             }
 
                         }
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity{
                             Toast.makeText(MainActivity.this,"Youv'e won!",Toast.LENGTH_SHORT).show();
                         }
 
+
                     }
                     else{
                         if (index<6) {
@@ -85,15 +87,19 @@ public class MainActivity extends AppCompatActivity{
                             int imageKey = getResources().getIdentifier("hangman" + index, "drawable", getPackageName());
                             ivHangman.setImageResource(imageKey);
                         }
-                        if(index==
-                                6) Toast.makeText(MainActivity.this,"Youv'e lost",Toast.LENGTH_SHORT).show();
+                        if(index==6) Toast.makeText(MainActivity.this,"Youv'e lost",Toast.LENGTH_SHORT).show();
                     }
 
                 counter++;
+                charSequence = "";
+                etLetter.removeTextChangedListener(tw);
+                etLetter.setText("");
+                etLetter.addTextChangedListener(tw);
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+
 
             }
         });
